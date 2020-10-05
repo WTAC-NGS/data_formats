@@ -445,11 +445,11 @@ and then divide this by 4.
 
     \textbf{7.} 2kbp. See the \textbf{PI} field.
 
-    \textbf{8.} The quality is 20000006. We can use \texttt{grep} to find
-the id, followed by \texttt{awk} to print the fifth column:
+    \textbf{8.} The quality is 48. We can use \texttt{grep} to find the id,
+followed by \texttt{awk} to print the fifth column:
 
 \begin{verbatim}
-grep "ERR003762.5016205" data/example.sam | awk "{print $5}"
+grep "ERR003762.5016205" data/example.sam | awk '{print $5}'
 \end{verbatim}
 
     \textbf{9.} The CIGAR is 37M. We can use \texttt{grep} and \texttt{awk}
@@ -544,7 +544,7 @@ than 10:
 bcftools query -f'%POS\n' -i 'AC[0]>10' data/1kg.bcf | wc -l
 \end{verbatim}
 
-    \textbf{24.} There are 690 such positions. The first command picks out
+    \textbf{24.} There are 451 such positions. The first command picks out
 sample HG00107. We can then pipe the output to the second command to
 filter by depth and non-reference genotype. Then use \texttt{wc} to
 count the lines:
@@ -594,8 +594,8 @@ grep ^SN lane*.sorted.bam.bchk | awk -F'\t' '$2=="raw total sequences:"'
     \textbf{4.} 2235 pairs mapped to a different chromosome. Look for
 ``pairs on different chromosomes''
 
-    \textbf{5.} The mean insert size is 276.4 and the standard deviation is
-46.9. Look for ``insert size mean'' and ``insert size standard
+    \textbf{5.} The mean insert size is 275.9 and the standard deviation is
+47.7. Look for ``insert size mean'' and ``insert size standard
 deviation''.
 
     \textbf{6.} 282478 reads were properly paired. Look for ``reads properly
