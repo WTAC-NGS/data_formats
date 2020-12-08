@@ -659,7 +659,7 @@ Q = 65 - 33 = 32
 The Phred quality score \texttt{Q} relates to the base-calling error
 probability \texttt{P} as
 
-~~~~~~ P = 10-Q/10
+~~~~~~ $P = 10^{-Q/10}$
 
 The Phred quality score is a measure of the quality of base calls. For
 example, a base assigned with a Phred quality score of 30 tells us that
@@ -710,8 +710,7 @@ fragment alignment) per line describing the alignment between fragment
 and reference. Each record has 11 fixed columns and optional
 key:type:value tuples. Open the SAM/BAM file specification document
 \url{https://samtools.github.io/hts-specs/SAMv1.pdf} either in a web
-browser or you can find a copy in the QC directory as you may need to
-refer to it throughout this tutorial.
+browser or you can find a copy in the \lstinline{~/course_data/data_formats/practical} directory as you may need to refer to it throughout this tutorial.
 
 Now let us have a closer look at the different parts of the SAM/BAM
 format.
@@ -758,7 +757,7 @@ sequencing lane. Some common RG TAGs are:
   CN: Sequencing centre
 \end{itemize}
 
-While most of these are self explanitory, insert fragment size may
+While most of these are self explanatory, insert fragment size may
 occasionally be negative. This simply indicates that the reads found are
 overlapping while its size is less than 2 x read length.
 
@@ -1275,7 +1274,7 @@ meta-information lines that can be included are \#\#INFO, \#\#FORMAT and
 \texttt{\textless{}\textgreater{}}. More information about these fields
 is available in the VCF specification
 \url{http://samtools.github.io/hts-specs/VCFv4.3.pdf}. This can be
-accessed using a web browser and there is a copy in the QC directory.
+accessed using a web browser and there is a copy in the \lstinline{~/course_data/data_formats/practical} directory.
 
 \hypertarget{header-line}{%
 \paragraph{Header line}\label{header-line}}
@@ -1450,7 +1449,7 @@ bcftools query \PYZhy{}f\PY{l+s+s1}{\PYZsq{}\PYZpc{}CHROM\PYZbs{}t\PYZpc{}POS\PY
 
     We use \textbf{\texttt{-i}} with the expression
 \texttt{AC{[}0{]}\textgreater{}2}. AC is an info field that holds the
-\_\_a\_\_llele \_\_c\_\_ount. Some fields can hold multiple values, so
+\emph{a}llele \emph{c}ount. Some fields can hold multiple values, so
 we use \texttt{AC{[}0{]}\textgreater{}2} to indicate that we are looking
 for the first value (this is zero indexed, and hence starts at 0 instead
 of 1), and that this value should be \textgreater{} 2. To format our
@@ -2114,8 +2113,6 @@ list the files in reverse chronological order):
 ls \PYZhy{}lrt data
 \end{Verbatim}
 \end{tcolorbox}
-
-    This also generated an index file, 1kg.bcf.csi.
 
     To convert a VCF file to BCF, we can run a similar command. If we want
 to keep the original BCF, we need to give the new one a different name
