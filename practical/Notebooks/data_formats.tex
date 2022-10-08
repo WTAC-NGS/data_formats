@@ -1,12 +1,10 @@
 \documentclass[11pt]{article}
-\renewcommand{\arraystretch}{1.5} % Default value: 1
 \usepackage{sectsty}
 \allsectionsfont{\color{blue}\fontfamily{lmss}\selectfont}
 \usepackage{fontspec}
 \setmainfont{XCharter}
 
 \usepackage{listings}
-
 \lstset{
 basicstyle=\small\ttfamily,
 tabsize=8,
@@ -35,13 +33,6 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \usepackage[breakable]{tcolorbox}
     \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
 
-    \usepackage{iftex}
-    \ifPDFTeX
-    	\usepackage[T1]{fontenc}
-    	\usepackage{mathpazo}
-    \else
-    	\usepackage{fontspec}
-    \fi
 
     % Basic figure setup, for now with no caption control since it's done
     % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
@@ -53,7 +44,7 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     % in the conversion process - todo).
     \usepackage{caption}
     \DeclareCaptionFormat{nocaption}{}
-    \captionsetup{labelformat=nolabel, textfont=bf}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
 
     \usepackage{float}
     \floatplacement{figure}{H} % forces figures to be placed at the correct location
@@ -69,7 +60,21 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     }
     \usepackage{upquote} % Upright quotes for verbatim code
     \usepackage{eurosym} % defines \euro
-    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
     \usepackage{fancyvrb} % verbatim replacement that allows latex
     \usepackage{grffile} % extends the file name processing of package graphics
                          % to support a larger range
@@ -98,6 +103,8 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \usepackage{titling}
     \usepackage{longtable} % longtable support required by pandoc >1.10
     \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
@@ -205,73 +212,73 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
 \def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
 
-\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
-\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
-\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
-\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
-\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
-\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
-\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
-\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
-\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
-\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
-\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
-\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
-\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
-\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
-\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
-\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
-\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
-\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
-\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
-\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
-\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
-\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
-\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
-\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
-\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
-\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
-\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
-\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
-\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
-\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
-\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
-\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
-\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
-\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
 
 \def\PYZbs{\char`\\}
 \def\PYZus{\char`\_}
@@ -383,7 +390,7 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
     \makeatother
     \newcommand{\prompt}[4]{
-        {\ttfamily\llap{{\color{blue}\LARGE\faKeyboardO\hspace{3pt}#4}}\vspace{-\baselineskip}}
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
     }
 
 
@@ -505,7 +512,7 @@ command below:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-\PY{n+nb}{cd} \PYZti{}/course\PYZhy{}data/data\PYZus{}formats/
+\PY{n+nb}{cd} \PYZti{}/course\PYZus{}data/data\PYZus{}formats/
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -666,18 +673,18 @@ example, a base assigned with a Phred quality score of 30 tells us that
 there is a 1 in 1000 chance that this base was called incorrectly.
 
 \begin{longtable}[]{@{}lll@{}}
-\hline
+\toprule
 Phred Quality Score & Probability of incorrect base call & Base call
-accuracy\tabularnewline
-\hline
+accuracy \\
+\midrule
 \endhead
-10 & 1 in 10 & 90\%\tabularnewline
-20 & 1 in 100 & 99\%\tabularnewline
-30 & 1 in 1000 & 99.9\%\tabularnewline
-40 & 1 in 10,000 & 99.99\%\tabularnewline
-50 & 1 in 100,000 & 99.999\%\tabularnewline
-60 & 1 in 1,000,000 & 99.9999\%\tabularnewline
-\hline
+10 & 1 in 10 & 90\% \\
+20 & 1 in 100 & 99\% \\
+30 & 1 in 1000 & 99.9\% \\
+40 & 1 in 10,000 & 99.99\% \\
+50 & 1 in 100,000 & 99.999\% \\
+60 & 1 in 1,000,000 & 99.9999\% \\
+\bottomrule
 \end{longtable}
 
     \hypertarget{exercises}{%
@@ -860,7 +867,7 @@ first 11 columns are mandatory.
 The image below provides a visual guide to some of the columns of the
 SAM format.
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/SAM_BAM.png}
 \caption{SAM format}
@@ -917,20 +924,20 @@ Have a look at the table below. It contains the meaning of all different
 symbols of a CIGAR string:
 
 \begin{longtable}[]{@{}ll@{}}
-\hline
-Symbol & Meaning\tabularnewline
-\hline
+\toprule
+Symbol & Meaning \\
+\midrule
 \endhead
-M & alignment match or mismatch\tabularnewline
-= & sequence match\tabularnewline
-X & sequence mismatch\tabularnewline
-I & insertion into the read (sample sequenced)\tabularnewline
-D & deletion from the read (sample sequenced)\tabularnewline
-S & soft clipping (clipped sequences present in SEQ)\tabularnewline
-H & hard clipping (clipped sequences NOT present in SEQ)\tabularnewline
-N & skipped region from the reference\tabularnewline
-P & padding (silent deletion from padded reference)\tabularnewline
-\hline
+M & alignment match or mismatch \\
+= & sequence match \\
+X & sequence mismatch \\
+I & insertion into the read (sample sequenced) \\
+D & deletion from the read (sample sequenced) \\
+S & soft clipping (clipped sequences present in SEQ) \\
+H & hard clipping (clipped sequences NOT present in SEQ) \\
+N & skipped region from the reference \\
+P & padding (silent deletion from padded reference) \\
+\bottomrule
 \end{longtable}
 
 Below are two examples describing the CIGAR string in more detail.
@@ -990,26 +997,26 @@ describing the alignment. The following table contains the information
 you can get from the bitwise FLAGs:
 
 \begin{longtable}[]{@{}llll@{}}
-\hline
-Hex & Dec & Flag & Description\tabularnewline
-\hline
+\toprule
+Hex & Dec & Flag & Description \\
+\midrule
 \endhead
 0x1 & 1 & PAIRED & paired-end (or multiple-segment) sequencing
-technology\tabularnewline
+technology \\
 0x2 & 2 & PROPER\_PAIR & each segment properly aligned according to the
-aligner\tabularnewline
-0x4 & 4 & UNMAP & segment unmapped\tabularnewline
-0x8 & 8 & MUNMAP & next segment in the template unmapped\tabularnewline
-0x10 & 16 & REVERSE & SEQ is reverse complemented\tabularnewline
+aligner \\
+0x4 & 4 & UNMAP & segment unmapped \\
+0x8 & 8 & MUNMAP & next segment in the template unmapped \\
+0x10 & 16 & REVERSE & SEQ is reverse complemented \\
 0x20 & 32 & MREVERSE & SEQ of the next segment in the template is
-reversed\tabularnewline
-0x40 & 64 & READ1 & the first segment in the template\tabularnewline
-0x80 & 128 & READ2 & the last segment in the template\tabularnewline
-0x100 & 256 & SECONDARY & secondary alignment\tabularnewline
-0x200 & 512 & QCFAIL & not passing quality controls\tabularnewline
-0x400 & 1024 & DUP & PCR or optical duplicate\tabularnewline
-0x800 & 2048 & SUPPLEMENTARY & supplementary alignment\tabularnewline
-\hline
+reversed \\
+0x40 & 64 & READ1 & the first segment in the template \\
+0x80 & 128 & READ2 & the last segment in the template \\
+0x100 & 256 & SECONDARY & secondary alignment \\
+0x200 & 512 & QCFAIL & not passing quality controls \\
+0x400 & 1024 & DUP & PCR or optical duplicate \\
+0x800 & 2048 & SUPPLEMENTARY & supplementary alignment \\
+\bottomrule
 \end{longtable}
 
 For example, if you have an alignment with FLAG set to 113, this can
@@ -1254,7 +1261,7 @@ of tab-delimited text and is parsable by standard UNIX commands which
 makes it flexible and user-extensible. The figure below provides an
 overview of the different components of a VCF file:
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/VCF1.png}
 \caption{VCF format}
@@ -1438,8 +1445,8 @@ bcftools query \PYZhy{}f\PY{l+s+s1}{\PYZsq{}\PYZpc{}POS\PYZbs{}t\PYZpc{}REF\PYZb
     Finally, let's look at the \textbf{\texttt{-i}} option. With this option
 we can select only sites for which a particular expression is true. For
 instance, if we only want to look at sites that have at least 2
-alternate alleles, we can use the following expression (piped to
-\texttt{head} to only show a subset of the output):
+alternate alleles across all samples, we can use the following
+expression (piped to \texttt{head} to only show a subset of the output):
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
@@ -1530,7 +1537,7 @@ reference-only sites can be represented in a single record using the
 ``INFO/END'' tag. Symbolic alleles (\textless*\textgreater) are used for
 incremental calling:
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/gVCF.png}
 \caption{gVCF}
@@ -1602,7 +1609,7 @@ errors gets. This leads to a heterogeneous population in the cluster,
 and a decreased signal purity, which in turn reduces the precision of
 the base calling. The figure below shows an example of this.
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/base_qual.png}
 \caption{Mean Base Quality}
@@ -1617,7 +1624,7 @@ for example using a tool called
 The figures below shows an example of a good sequencing run (left) and a
 poor sequencing run (right).
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/base_qual_comparison.png}
 \caption{Base quality}
@@ -1640,7 +1647,7 @@ cycle methods \textbf{T fluorophore accumulation} was an issue, where
 incomplete removal of the dye coupled to thymine lead to an ambient
 accumulation the nucleotides, causing a false high Thymine trend.
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/base_calling_errors.jpg}
 \caption{Base Calling Errors}
@@ -1650,9 +1657,6 @@ accumulation the nucleotides, causing a false high Thymine trend.
 \href{https://academic.oup.com/bib/article/12/5/489/268399}{10.1093/bib/bbq077}
 
 \hypertarget{mismatches-per-cycle}{%
-
-\pagebreak
-
 \subsection{Mismatches per cycle}\label{mismatches-per-cycle}}
 
 Aligning reads to a high-quality reference genome can provide insight to
@@ -1667,7 +1671,7 @@ even between the cycles, which is what we would expect from a good run.
 However, in the graph on the right, two cycles stand out with a lot of
 mismatches compared to the other cycles.
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/mismatch_per_cycle_comparison.png}
 \caption{Mismatches per cycle}
@@ -1685,7 +1689,7 @@ reference, at \textasciitilde38\%. However, in the right graph, the GC
 content of the sample is closer to 55\%, indicating that there is an
 issue with this sample.
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/gc_bias.png}
 \caption{GC Content}
@@ -1701,7 +1705,7 @@ lines in this plot should be parallel with each other like in the graph
 on the left below. In the graph on the right, the initial spikes are
 likely due to adapter sequences that have not been removed.
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/acgt_per_cycle_comparison.png}
 \caption{GC content by cycle}
@@ -1716,7 +1720,7 @@ the second however, there is also a peak at around 200 bp. This
 indicates that there was an issue with the fragment size selection
 during library prep.
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/fragment_size_comparison.png}
 \caption{Fragment size distribution}
@@ -1728,7 +1732,7 @@ during library prep.
 \textbf{Q1: The figure below is from a 100bp paired-end sequencing. Can
 you spot any problems?}
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/insert_size_quiz.png}
 \caption{Q1 Insert size distribution}
@@ -1742,7 +1746,7 @@ Sometimes, air bubbles occur in the flow cell, which can manifest as
 false indels. The spike in the right image provides an example of how
 this can look.
 
-    \begin{figure}[!h]
+    \begin{figure}
 \centering
 \includegraphics{img/indels_per_cycle_comparison.png}
 \caption{Indels per cycle}
